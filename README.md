@@ -1,5 +1,4 @@
 #smints
-======
 
 This is an extension to @rabmyself 's popular smint plugin, it now adds an 'active' class to the menu a tag that's currently in view. 
 
