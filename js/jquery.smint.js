@@ -1,11 +1,8 @@
 /*
 
 SMINT V1.0 by Robert McCracken
-
 SMINT is my first dabble into jQuery plugins!
-
 http://www.outyear.co.uk/smint/
-
 If you like Smint, or have suggestions on how it could be improved, send me a tweet @rabmyself
 
 */
@@ -21,16 +18,20 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 		            'scrollSpeed '  : 500
 		}, options);
 
+		//Set the variables needed
+		var optionLocs = new Array();
+		var lastScrollTop = 0;
+		var menuHeight = $(".smint").height();
 
-		return $('.smint a').each( function() {
-
+		return $('.smint a').each( function(index) {
             
 			if ( settings.scrollSpeed ) {
-
 				var scrollSpeed = settings.scrollSpeed
-
 			}
-
+			
+			//Fill the menu
+			var id = $(this).attr("id");
+			optionLocs.push(Array($("div."+id).position().top-menuHeight, $("div."+id).height()+$("div."+id).position().top, id));
 
 			///////////////////////////////////
 
@@ -38,34 +39,52 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 			var stickyTop = $('.smint').offset().top;	
 
 			// check position and make sticky if needed
-			var stickyMenu = function(){
+			var stickyMenu = function(direction){
 				
 				// current distance top
 				var scrollTop = $(window).scrollTop(); 
 							
 				// if we scroll more than the navigation, change its position to fixed and add class 'fxd', otherwise change it back to absolute and remove the class
 				if (scrollTop > stickyTop) { 
-					$('.smint').css({ 'position': 'fixed', 'top':0 }).addClass('fxd');
+					$('.smint').css({ 'position': 'fixed', 'top':0 }).addClass('fxd');	
+				} else {
+					$('.smint').css({ 'position': 'absolute', 'top':stickyTop }).removeClass('fxd'); 
+				}   
 
-					} else {
-						$('.smint').css({ 'position': 'absolute', 'top':stickyTop }).removeClass('fxd'); 
-					}   
+				//Check if the position is inside then change the menu
+				if(optionLocs[index][0] <= scrollTop && scrollTop <= optionLocs[index][1]){	
+					if(direction == "up"){
+						$("#"+id).addClass("active");
+						$("#"+optionLocs[index+1][2]).removeClass("active");
+					} else if(index > 0) {
+						$("#"+id).addClass("active");
+						$("#"+optionLocs[index-1][2]).removeClass("active");
+					} else if(direction == undefined){
+						$("#"+id).addClass("active");
+					}
+				}
 			};
-					
-			// run function
+	
+			// run functions
 			stickyMenu();
 					
 			// run function every time you scroll
 			$(window).scroll(function() {
-				 stickyMenu();
+				//Get the direction of scroll
+				var st = $(this).scrollTop();
+				if (st > lastScrollTop) {
+				    direction = "down";
+				} else if (st < lastScrollTop ){
+				    direction = "up";
+				}
+				lastScrollTop = st;
+				stickyMenu(direction);
 			});
 
 			///////////////////////////////////////
     
         
         	$(this).on('click', function(e){
-
-
 				// gets the height of the users div. This is used for off-setting the scroll so th emenu doesnt overlap any content in the div they jst scrolled to
 				var selectorHeight = $('.smint').height();   
 
@@ -82,11 +101,6 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 				$("html, body").animate({ scrollTop: goTo }, scrollSpeed);
 
 			});	
-
-            
-
 		});
-
 	}
-
 })();
