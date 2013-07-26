@@ -50,17 +50,9 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 				} else {
 					$('.smint').css({ 'position': 'absolute', 'top':stickyTop }).removeClass('fxd'); 
 				}   
-<<<<<<< HEAD
 
 				//Check if the position is inside then change the menu
 				if(optionLocs[index][0] <= scrollTop && scrollTop <= optionLocs[index][1]){	
-=======
-				console.log(scrollTop);
-				//Check if the position is inside then change the menu
-				if(optionLocs[index][0] <= scrollTop && scrollTop <= optionLocs[index][1]){
-					console.log(id);
-					console.log(direction);	
->>>>>>> gh-pages
 					if(direction == "up"){
 						$("#"+id).addClass("active");
 						$("#"+optionLocs[index+1][2]).removeClass("active");
@@ -69,10 +61,6 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 						$("#"+optionLocs[index-1][2]).removeClass("active");
 					} else if(direction == undefined){
 						$("#"+id).addClass("active");
-<<<<<<< HEAD
-					}
-=======
-						
 					}
 					$.each(optionLocs, function(i){
 						if(id != optionLocs[i][2]){
@@ -80,7 +68,6 @@ If you like Smint, or have suggestions on how it could be improved, send me a tw
 							$("#"+optionLocs[i][2]).removeClass("active");
 						}
 					});
->>>>>>> gh-pages
 				}
 			};
 	
